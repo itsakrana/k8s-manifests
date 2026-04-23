@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: stateful-app            # StatefulSet name
+  namespace: devops             # Namespace
+
+spec:
+  serviceName: "app-service"    # Headless service (for stable network identity)
+  replicas: 2                   # Number of Pods (stateful-app-0, stateful-app-1)
+
+  selector:
+    matchLabels:
+      app: myapp                # Must match Pod labels
+
+  template:
+    metadata:
+      labels:
+        app: myapp              # Pod label
+
+    spec:
+      containers:
+      - name: app               # Container name
+        image: nginx            # Container image
