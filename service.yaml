@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service          # Service name
+  namespace: devops          # Namespace
+
+spec:
+  type: NodePort             # Exposes app on Node IP + port
+
+  selector:
+    app: myapp               # Connects to Pods with this label
+
+  ports:
+  - port: 80                 # Service port (inside cluster)
+    targetPort: 80           # Container port
+    nodePort: 30007          # External port (access from browser)
