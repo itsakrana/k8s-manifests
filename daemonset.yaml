@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: app-daemon              # DaemonSet name
+  namespace: devops             # Namespace
+
+spec:
+  selector:
+    matchLabels:
+      app: daemon-app           # Must match Pod label
+
+  template:
+    metadata:
+      labels:
+        app: daemon-app         # Pod label
+
+    spec:
+      containers:
+      - name: daemon
+        image: nginx            # Example container
+        ports:
+        - containerPort: 80
