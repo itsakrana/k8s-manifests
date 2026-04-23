@@ -1,0 +1,22 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: app-hpa                 # HPA name
+  namespace: devops             # Namespace
+
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: app-deployment        # Target Deployment to scale
+
+  minReplicas: 1                # Minimum Pods
+  maxReplicas: 5                # Maximum Pods
+
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu                 # Metric (CPU usage)
+      target:
+        type: Utilization
+        averageUtilization: 50  # Target CPU = 50%
