@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment              # Deployment name
+  namespace: devops                # Namespace
+
+spec:
+  replicas: 2                      # Number of Pods running
+
+  selector:
+    matchLabels:
+      app: myapp                   # Must match Pod labels
+
+  template:
+    metadata:
+      labels:
+        app: myapp                 # Label for Pods
+
+    spec:
+      serviceAccountName: app-sa   # ServiceAccount for permissions (RBAC)
+
+      containers:
+      - name: app                  # Container name
+        image: nginx               # Container image
+        ports:
+        - containerPort: 80        # Port inside container
+
+        envFrom:
+        - configMapRef:
+            name: app-config       # Load env from ConfigMap
+        - secretRef:
+            name: app-secret       # Load sensitive env from Secret
+
+        volumeMounts:
+        - mountPath: "/data"       # Path inside container
+          name: storage            # Must match volume name
+
+      volumes:
+      - name: storage              # Volume name
+        persistentVolumeClaim:
+          claimName: pvc-claim     # Existing PVC for storage
