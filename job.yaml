@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-backup-job            # Job name
+  namespace: devops
+
+spec:
+  backoffLimit: 2                # Retry 2 times if fails
+
+  template:
+    spec:
+      containers:
+      - name: backup
+        image: mysql:8           # MySQL client image
+
+        command: ["/bin/sh", "-c"]
+        args:
+        - mysqldump -h $DB_HOST -u $DB_USER -p$DB_PASS $DB_NAME > /backup/backup.sql
+
+        envFrom:
+        - configMapRef:
+            name: app-config     # DB_HOST, DB_NAME
+        - secretRef:
+            name: app-secret     # DB_USER, DB_PASS
+
+        volumeMounts:
+        - name: backup-storage
+          mountPath: /backup     # Save backup here
+
+      restartPolicy: Never
+
+      volumes:
+      - name: backup-storage
+        persistentVolumeClaim:
+          claimName: pvc-claim   # Storage for backup
