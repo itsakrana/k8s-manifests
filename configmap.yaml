@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: devops
+data:
+  APP_ENV: "production"      # Environment
+  APP_NAME: "myapp"          # App name
+  DB_HOST: "mysql-service"   # Database service name
+  DB_PORT: "3306"            # Database port
