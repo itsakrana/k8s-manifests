@@ -2,8 +2,8 @@
 
 📦 Namespace
 
-Q: What is Namespace?
->**A: Separates resources inside a cluster.**
+Q: What is Namespace?</br>
+A: Separates resources inside a cluster.
 
 ⚙️ ConfigMap
 
